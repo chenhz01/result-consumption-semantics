@@ -1,6 +1,7 @@
 # Result Consumption Semantics — Draft Specification
 
-**Version:** 0.1.0-draft
+**Version:** 0.2.0-draft
+**Spec identifier:** `rcs@0.2.0-draft` (machine-readable canonical version lives in [`VERSION`](VERSION); runners SHOULD assert their aligned version in one line against it — see §7)
 **License:** CC-BY-4.0
 **Status:** Draft — seeking second independent implementations before any stability claim.
 
@@ -103,6 +104,17 @@ Compare the runs on a pre-declared behavioral delta surface: tool calls issued, 
 - Ablation is an experiment-layer act: it costs at least one additional run per result examined. Implementations SHOULD declare which results were selected for ablation and by what policy (e.g., `summary-embed` outcomes, high-stakes steps).
 - Where paired replay is impossible (non-deterministic environments, side-effecting tools), State B MUST remain unclaimed for those steps. Absence of an experiment is absence of a State B claim — not evidence of absence.
 
+### 5.4 State B conformance vector requirements
+
+A State B conformance vector (introduced in 0.2.0-draft; template in [`conformance/state-b-vector-template.md`](conformance/state-b-vector-template.md), structural validator in [`conformance/state-b-self-check.py`](conformance/state-b-self-check.py)) MUST declare:
+
+- **V-1 (delta surface).** The pre-declared behavioral delta surface (§5.2) and its threshold, stated *before* outcomes.
+- **V-2 (variance baseline).** Run-to-run variance measured without ablation, so that `indeterminate` is grounded in data rather than intuition.
+- **V-3 (ablation policy).** Which results were selected for ablation and by what policy (§5.3).
+- **V-4 (outcome discipline).** Exactly one of `influence-confirmed` / `influence-absent` / `indeterminate`; `indeterminate` MUST be reported as a non-pass and MUST NOT be flattened into either confirmation or absence (this is the State B analogue of I-2).
+
+A vector missing any of V-1..V-4 is non-conformant regardless of its conclusions.
+
 ## 6. Orthogonality
 
 State A and State B are independent axes. All four combinations are meaningful; the reference implementation's fixture demonstrates three of them explicitly (verbatim-without-influence is real, and so is influence-without-availability via compaction).
@@ -112,7 +124,8 @@ Conformance reporting SHOULD present availability and influence as separate colu
 ## 7. Conformance and versioning
 
 - Versioning: SemVer. While `0.x`, any field may change; stability claims are forbidden until 1.0.0.
-- A conformant implementation MUST: (a) emit the four-value availability axis per result (§4), (b) respect I-1..I-3, (c) expose ablation outcomes as a separate surface (§5) or explicitly declare State B unsupported.
+- **Machine-readable version check.** The canonical version string lives in [`VERSION`](VERSION). Runners SHOULD embed their aligned spec version as a constant and assert equality in a single line (e.g. `assert runner.SPEC_VERSION == open("VERSION").read().strip()`); on mismatch, the runner MUST report a drift error rather than silently passing.
+- A conformant implementation MUST: (a) emit the four-value availability axis per result (§4), (b) respect I-1..I-3, (c) expose ablation outcomes as a separate surface (§5) or explicitly declare State B unsupported; State B vectors additionally MUST satisfy V-1..V-4 (§5.4).
 - Drift between this specification and AgentMeasure's DR-005 / M-series invariants should be filed as an issue in **either** repository; both projects benefit from the mismatch being public.
 
 ## 8. Reference implementation
