@@ -2,7 +2,7 @@
 
 **A draft specification for separating result *availability* from behavioral *influence* in AI agent telemetry — with a concrete certification protocol for each.**
 
-Version: v0.1.0-draft · License: CC-BY-4.0 · Status: seeking second independent implementations
+Version: v0.2.0-draft · License: Apache-2.0 · Status: seeking second independent implementations
 
 ## Why this exists
 

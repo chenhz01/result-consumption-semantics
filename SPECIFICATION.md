@@ -2,7 +2,7 @@
 
 **Version:** 0.2.0-draft
 **Spec identifier:** `rcs@0.2.0-draft` (machine-readable canonical version lives in [`VERSION`](VERSION); runners SHOULD assert their aligned version in one line against it — see §7)
-**License:** CC-BY-4.0
+**License:** Apache-2.0
 **Status:** Draft — seeking second independent implementations before any stability claim.
 
 ## Lineage and credits
@@ -136,4 +136,4 @@ One synthetic trace; four tool results; each meets a different certification out
 
 ## License
 
-This specification is licensed [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). Attribution should reference this repository and the lineage section above.
+This specification is licensed [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0). Attribution should reference this repository and the lineage section above.
